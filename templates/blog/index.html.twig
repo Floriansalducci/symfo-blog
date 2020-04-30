@@ -5,36 +5,18 @@
 {% block body %}
 <section class="article">
 
-<article>
-    <h2>Titre de l'article</h2>
-    <div class="metadata">Ecrit le 10/05/2020 à 19h00 dans la categorie politique</div>
-    <div class="content">
-        <img src="http://placehold.it/350x150" alt="">
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Doloremque accusantium tenetur dolore impedit modi delectus!</p>
-        <p>Perspiciatis consequuntur non dolor atque ullam, animi nam, expedita harum eveniet ea corrupti a? Quaerat!</p>
-        <a href="{{path('blog_show')}}" class="btn-primary">Lire la suite</a>
-    </div>
+{% for articls in articles %}
+    <article>
+        <h2>{{articls.Title}}</h2>
+        <div class="metadata">Ecrit le {{ articls.createdAt | date('d/m/Y') }} à {{ articls.createdAt | date('H:i')}} dans la categorie politique</div>
+        <div class="content">
+            <img src="{{ articls.image }}" alt="">
+          {{articls.content | raw}}
+            <a href="{{path('blog_show',{'id': articls.id})}}" class="btn-primary">Lire la suite</a>
+        </div>
 </article>
-<article>
-    <h2>Titre de l'article</h2>
-    <div class="metadata">Ecrit le 10/05/2020 à 19h00 dans la categorie politique</div>
-    <div class="content">
-        <img src="http://placehold.it/350x150" alt="">
-        <p>Quos impedit omnis dolorem. Ducimus ad eum modi id mollitia tenetur, beatae fuga in accusantium?</p>
-        <p>Omnis nostrum repellat laboriosam mollitia explicabo eaque voluptates sit id ea, nisi corrupti, dolorum voluptatem!</p>
-        <a href="{{path('blog_show')}}" class="btn-primary">Lire la suite</a>
-    </div>
-</article>
-<article>
-    <h2>Titre de l'article</h2>
-    <div class="metadata">Ecrit le 10/05/2020 à 19h00 dans la categorie politique</div>
-    <div class="content">
-        <img src="http://placehold.it/350x150" alt="">
-        <p>Dolor quae sequi eligendi magnam, facere, inventore recusandae soluta sapiente voluptatibus deleniti, fugiat natus sunt.</p>
-        <p>Sapiente labore impedit quidem animi? Asperiores maiores quas dolorum, magni quidem sed dignissimos impedit? Inventore!</p>
-        <a href="{{path('blog_show')}}" class="btn-primary">Lire la suite</a>
-    </div>
-</article>
+{% endfor %}
+
 
 </section>
 {% endblock %}
