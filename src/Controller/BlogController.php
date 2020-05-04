@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Comment;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\Persistence\ObjectManager;
@@ -14,6 +15,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Entity\Articls;
 use App\Repository\ArticlsRepository;
 use App\Form\ArticlsType;
+use App\Form\CommentType;
+
 
 
 class BlogController extends AbstractController
@@ -92,14 +95,31 @@ class BlogController extends AbstractController
      */
 
 
-    public function show(Articls $articls)
+    public function show(Articls $articls, Request $request, ObjectManager $manager)
     {
-        return $this->render(
-            'blog/show.html.twig',
-            [
-            'articls'=> $articls,]
-        
-        );
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $comment->setCreatedAt(new \DateTime())
+                    ->setArtilcs($articls);
+            //Valide le commentaire
+            $manager->persist($comment);
+            // L'envoi dans la bdd
+            $manager->flush();
+
+            return $this->redirectToRoute('blog_show', [
+                'id'=> $articls->getId()
+            ]);
+        }
+
+        return $this->render('blog/show.html.twig', [
+            'articls'=> $articls,
+            'commentForm'=>$form->createView()
+            ]
+            );
     }
 }
    

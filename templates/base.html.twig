@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE >
 <html>
     <head>
         <meta charset="UTF-8">
@@ -22,12 +22,23 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{path('blog_create')}}">Crée une article</a>
             </li>
+
+            {% if not app.user %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{path('security_login')}}">Connexion</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{path('security_logout')}}">Deconnexion</a>
+            </li>
+            {% endif %}
         </ul>
          </div>
         </nav>
       <div class="containeur">
       {% block body %}{% endblock %}
-      <div>
+
        {% block javascripts %}{% endblock %}
+      </div>
     </body>
 </html>

@@ -12,6 +12,7 @@
 
     {# Mise en relation article commentaire #}
     <section id="commentaires">
+        <h1>{{ articls.comments | length }} Commentaires : </h1>
         {% for comment in articls.comments  %}
         <div class ="comment">
             <div class="row">
@@ -26,5 +27,17 @@
         </div>
 
 {% endfor %}
+
+        {%if app.user %}
+        {{ form_start(commentForm) }}
+        {{ form_row(commentForm.author, {'attr': {'placeholder' : "Votre nom"}})}}
+        {{ form_row(commentForm.content, {'attr': {'placeholder' : "Vôtre commentaire"}}) }}
+        <button type="submit" class="btn btn-success">Commenter </button>
+        {{ form_end(commentForm) }}
+
+        {% else %}
+        <h2>Vous ne pouvez pas commenté sans etre connecté</h2>
+        <a href="{{ path('security_login') }}" class="btn btn-primary">Connexion</a>
+           {% endif %}
     </section>
 {% endblock %}
